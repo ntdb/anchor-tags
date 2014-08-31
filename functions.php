@@ -1,6 +1,10 @@
 <?php
 
-//  Returns an array of all valid page tags
+/**
+* Returns an array of unique tags that exist on pages
+*
+* @return array
+*/
 function get_page_tags() {
   $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'page')->get();
   $tag_id = $tag_ext[0]->id;
@@ -22,7 +26,12 @@ function get_page_tags() {
   return array_unique($tags);
 }
 
-//  Finds pages with the specified tag and passes an array of their ids
+/**
+ * Returns an array of ids for pages that have the specified tag
+ *
+ * @param string
+ * @return array
+ */
 function get_pages_with_tag($tag='') {
   $tag_ext = Extend::where('key', '=', 'tags')->get();
   $tag_id = $tag_ext[0]->id;
@@ -39,7 +48,11 @@ function get_pages_with_tag($tag='') {
   return array_unique($pages);
 }
 
-//  Returns an array of all valid post tags
+/**
+* Returns an array of unique tags that exist on posts
+*
+* @return array
+*/
 function get_post_tags() {
   $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'post')->get();
   $tag_id = $tag_ext[0]->id;
@@ -61,8 +74,13 @@ function get_post_tags() {
   return array_unique($tags);
 }
 
-//  Finds posts with the specified tag and passes an array of their ids
-function get_posts_with_tag($tag='') {
+/**
+ * Returns an array of ids for posts that have the specified tag
+ *
+ * @param string
+ * @return array
+ */
+function get_posts_with_tag($tag) {
   $tag_ext = Extend::where('key', '=', 'tags')->get();
   $tag_id = $tag_ext[0]->id;
 
@@ -76,4 +94,63 @@ function get_posts_with_tag($tag='') {
   }
 
   return array_unique($posts);
+}
+
+/**
+ * Returns true if there is at least one tagged post
+ * This replaces the Anchor has_posts() method
+ *
+ * @return bool
+ */
+function has_tagged_posts() {
+  if(isset($_GET) && array_key_exists('tag',$_GET) && $tag = $_GET['tag']) {
+    $tagged_posts = get_posts_with_tag($tag);
+    $count = Post::
+    where_in('id', $tagged_posts)
+    ->where('status', '=', 'published')
+    ->count();
+
+    Registry::set('total_tagged_posts', $count);
+  } else {
+    Registry::set('total_tagged_posts', 0);
+  }
+
+  return Registry::get('total_tagged_posts', 0); > 0;
+}
+
+/**
+ * Returns true while there are still tagged posts in the array.
+ * This replaces the Anchor posts() method
+ *
+ * @return bool
+ */
+function tagged_posts() {
+  if(isset($_GET) && array_key_exists('tag',$_GET) && $tag = $_GET['tag']) {
+    if(! $posts = Registry::get('tagged_posts')) {
+      $tagged_posts = get_posts_with_tag($tag);
+      $posts = Post::
+      where_in('id', $tagged_posts)
+      ->where('status', '=', 'published')
+      ->sort('created', 'desc')
+      ->get();
+
+      Registry::set('tagged_posts', $posts = new Items($posts));
+    }
+
+    if($posts instanceof Items) {
+      if($result = $posts->valid()) {
+        // register single post
+        Registry::set('article', $posts->current());
+
+        // move to next
+        $posts->next();
+      }
+      // back to the start
+      else $posts->rewind();
+
+      return $result;
+    }
+  }
+
+  return false;
 }
