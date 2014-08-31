@@ -3,7 +3,7 @@
 Tag plugin for Anchor CMS based on custom fields. Supports tags for posts and pages while gracefully falling back to normal behavior when no tag is specified.
 
 
-## Usage
+## Setup
 1. In the AnchorCMS admin panel navigate to `Extend -> Custom Fields` and add the following fields, making special note of the unique keys:
 
 	1. Post tags
@@ -22,6 +22,10 @@ Tag plugin for Anchor CMS based on custom fields. Supports tags for posts and pa
 3. In `anchor/themes/<your_theme>/posts.php` replace `has_posts()` with `has_tagged_posts()` and `posts()` with `tagged_posts()`.
 
 4. Tagged page usage may or may not be useful to you and implementation will depend heavily on your theme. Open an issue if you have a specific question or problem.
+
+## Usage
+* Add tags to posts in the Admin panel and separate them using a single space
+* Browse posts by tag by appending `?tag=<your_tag>` to the end of your posts URL.
 
 ## Support
 Pull requests are welcome. Contact me via [Twitter](http://www.twitter.com/ntdb) or by opening an issue if you have any problems.
