@@ -1,4 +1,7 @@
-
+/*
+  Returns an array of all valid page tags
+  @TODO: Filter out tags without published pages
+**/
 function get_page_tags() {
   $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'page')->get();
   $tag_id = $tag_ext[0]->id;
@@ -16,6 +19,9 @@ function get_page_tags() {
   return array_unique($tags);
 }
 
+/*
+  Finds pages with the specified tag and passes an array of their ids
+**/
 function get_pages_with_tag($tag='') {
   $tag_ext = Extend::where('key', '=', 'tags')->get();
   $tag_id = $tag_ext[0]->id;
@@ -32,6 +38,10 @@ function get_pages_with_tag($tag='') {
   return array_unique($pages);
 }
 
+/*
+  Returns an array of all valid post tags
+  @TODO: Filter out tags without published posts
+**/
 function get_post_tags() {
   $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'post')->get();
   $tag_id = $tag_ext[0]->id;
@@ -49,6 +59,9 @@ function get_post_tags() {
   return array_unique($tags);
 }
 
+/*
+  Finds posts with the specified tag and passes an array of their ids
+**/
 function get_posts_with_tag($tag='') {
   $tag_ext = Extend::where('key', '=', 'tags')->get();
   $tag_id = $tag_ext[0]->id;
