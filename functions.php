@@ -90,7 +90,7 @@ function get_posts_with_tag($tag) {
     ->where('data', 'LIKE', '%'.$tag.'%')
     ->get() as $meta) {
 
-    $posts[] = $meta->page;
+    $posts[] = $meta->post;
   }
 
   return array_unique($posts);
