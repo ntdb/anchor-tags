@@ -104,11 +104,14 @@ function get_posts_with_tag($tag) {
  */
 function has_tagged_posts() {
   if(isset($_GET) && array_key_exists('tag',$_GET) && $tag = $_GET['tag']) {
-    $tagged_posts = get_posts_with_tag($tag);
-    $count = Post::
-    where_in('id', $tagged_posts)
-    ->where('status', '=', 'published')
-    ->count();
+    if($tagged_posts = get_posts_with_tag($tag)) {
+      $count = Post::
+      where_in('id', $tagged_posts)
+      ->where('status', '=', 'published')
+      ->count();
+    } else {
+      $count = 0;
+    }
 
     Registry::set('total_tagged_posts', $count);
   } else {
