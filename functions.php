@@ -115,7 +115,7 @@ function has_tagged_posts() {
     Registry::set('total_tagged_posts', 0);
   }
 
-  return Registry::get('total_tagged_posts', 0); > 0;
+  return Registry::get('total_tagged_posts', 0) > 0;
 }
 
 /**
