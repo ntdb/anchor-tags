@@ -116,6 +116,7 @@ function has_tagged_posts() {
     Registry::set('total_tagged_posts', $count);
   } else {
     Registry::set('total_tagged_posts', 0);
+    return has_posts();
   }
 
   return Registry::get('total_tagged_posts', 0) > 0;
@@ -153,6 +154,8 @@ function tagged_posts() {
 
       return $result;
     }
+  } else {
+    return posts();
   }
 
   return false;
