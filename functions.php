@@ -1,12 +1,10 @@
-<?php
-
 /**
 * Returns an array of unique tags that exist on pages
 *
 * @return array
 */
 function get_page_tags() {
-  $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'page')->get();
+  $tag_ext = Extend::where('key', '=', 'page_tags')->where('data_type', '=', 'page')->get();
   $tag_id = $tag_ext[0]->id;
 
   $tags = array();
@@ -33,7 +31,7 @@ function get_page_tags() {
  * @return array
  */
 function get_pages_with_tag($tag='') {
-  $tag_ext = Extend::where('key', '=', 'tags')->get();
+  $tag_ext = Extend::where('key', '=', 'page_tags')->get();
   $tag_id = $tag_ext[0]->id;
 
   $pages = array();
@@ -54,7 +52,7 @@ function get_pages_with_tag($tag='') {
 * @return array
 */
 function get_post_tags() {
-  $tag_ext = Extend::where('key', '=', 'tags')->where('data_type', '=', 'post')->get();
+  $tag_ext = Extend::where('key', '=', 'post_tags')->where('data_type', '=', 'post')->get();
   $tag_id = $tag_ext[0]->id;
 
   $tags = array();
@@ -81,7 +79,7 @@ function get_post_tags() {
  * @return array
  */
 function get_posts_with_tag($tag) {
-  $tag_ext = Extend::where('key', '=', 'tags')->get();
+  $tag_ext = Extend::where('key', '=', 'post_tags')->get();
   $tag_id = $tag_ext[0]->id;
 
   $posts = array();
