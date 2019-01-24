@@ -4,7 +4,7 @@
 * @return array
 */
 function get_page_tags() {
-  $tag_ext = Extend::where('key', '=', 'page_tags')->where('data_type', '=', 'page')->get();
+  $tag_ext = Extend::where('key', '=', 'page_tags')->where('type', '=', 'page')->get();
   $tag_id = $tag_ext[0]->id;
 
   $prefix = Config::db('prefix', '');
@@ -12,8 +12,8 @@ function get_page_tags() {
   $tags = array();
   $index = 0;
   foreach(Query::table($prefix.'page_meta')
-    ->left_join('pages', 'pages.id', '=', 'page_meta.page')
-    ->where('pages.status', '=', 'published')
+    ->left_join($prefix.'pages', $prefix.'pages.id', '=', $prefix.'page_meta.page')
+    ->where($prefix.'pages.status', '=', 'published')
     ->where('extend', '=', $tag_id)
     ->get() as $meta) {
     $page_meta = json_decode($meta->data);
@@ -56,7 +56,7 @@ function get_pages_with_tag($tag='') {
 * @return array
 */
 function get_post_tags() {
-  $tag_ext = Extend::where('key', '=', 'post_tags')->where('data_type', '=', 'post')->get();
+  $tag_ext = Extend::where('key', '=', 'post_tags')->where('type', '=', 'post')->get();
   $tag_id = $tag_ext[0]->id;
 
   $prefix = Config::db('prefix', '');
@@ -64,8 +64,8 @@ function get_post_tags() {
   $tags = array();
   $index = 0;
   foreach(Query::table($prefix.'post_meta')
-    ->left_join('posts', 'posts.id', '=', 'post_meta.post')
-    ->where('posts.status', '=', 'published')
+    ->left_join($prefix.'posts', $prefix.'posts.id', '=', $prefix.'post_meta.post')
+    ->where($prefix.'posts.status', '=', 'published')
     ->where('extend', '=', $tag_id)
     ->get() as $meta) {
     $post_meta = json_decode($meta->data);
