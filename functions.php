@@ -166,3 +166,15 @@ function tagged_posts() {
 
   return false;
 }
+
+/**
+ * Returns a (possible empty) list of tags for the current post
+ *
+ * @return array
+ */
+function article_tags() {
+  if ($tags = article_custom_field('post_tags')) {
+    return explode(' ', $tags);
+  }
+  return Array();
+}
